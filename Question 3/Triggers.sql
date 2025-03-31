@@ -7,8 +7,8 @@ BEGIN
     SELECT COUNT(*) INTO count
     FROM rent
     WHERE (plate = NEW.plate
-    AND start_date < NEW.end_date
-    AND end_date > NEW.start_date);
+    AND start_date <= NEW.end_date
+    AND end_date >= NEW.start_date);
 
     IF count > 0 THEN 
 	RAISE EXCEPTION 'The same car cannot be rented on two different rent with overlapping dates';
@@ -57,7 +57,7 @@ BEGIN
     AND end_date = NEW.start_date);
 
     IF count > max THEN 
-	RAISE EXCEPTION 'The number of passengers is more than the capacity of the car.' 
+	RAISE EXCEPTION 'The number of passengers is more than the capacity of the car.';
  	END IF;
 	RETURN NEW;
 	
@@ -81,7 +81,7 @@ BEGIN
 	AND c.license = TRUE);
 	
     IF count = 0 THEN 
-	RAISE EXCEPTION 'One or more of the passengers must have driver’s licenses.' 
+	RAISE EXCEPTION 'One or more of the passengers must have driver’s licenses.';
 	END IF;
 	RETURN NEW;
 	
